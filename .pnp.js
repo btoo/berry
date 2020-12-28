@@ -43824,6 +43824,14 @@ function applyPatch(pnpapi, opts) {
   }
 
   function getIssuerSpecsFromModule(module) {
+    if (module && !module.parent && !module.filename && module.paths.length > 0) {
+      return [{
+        apiPath: opts.manager.findApiPathFor(module.paths[0]),
+        path: module.paths[0],
+        module
+      }];
+    }
+
     const issuer = getIssuerModule(module);
     const issuerPath = issuer !== null ? npath.dirname(issuer.filename) : process.cwd();
     return [{
